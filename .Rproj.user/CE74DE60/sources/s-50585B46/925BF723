@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541119325800.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "925BF723",
+    "lastKnownWriteTime" : 1541462535,
+    "last_content_update" : 1541462535082,
+    "path" : "/Volumes/DiscDrive/PlotlyPresentation/barGraph.R",
+    "project_path" : "barGraph.R",
+    "properties" : {
+        "cursorPosition" : "93,0",
+        "scrollLine" : "89",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

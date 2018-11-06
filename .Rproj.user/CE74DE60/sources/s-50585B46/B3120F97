@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541461614558.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B3120F97",
+    "lastKnownWriteTime" : 6,
+    "last_content_update" : 1541461614558,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "8C08B93C",
+        "caption" : "playerMeanAtBatsYearLeague",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=playerMeanAtBatsYearLeague&cache_key=8C08B93C",
+        "displayedObservations" : 2835,
+        "environment" : "",
+        "object" : "playerMeanAtBatsYearLeague",
+        "preview" : 0,
+        "totalObservations" : 2835,
+        "variables" : 5
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

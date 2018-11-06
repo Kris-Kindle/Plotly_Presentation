@@ -1,0 +1,115 @@
+library(plotly) # Use this for pretty graphs
+library(tidyverse) # This includes the dplyr verbs and the magical pipe (%>%)
+library(Lahman) # Use the built in data sets for our plots
+library(crosstalk)
+
+# Read in the batting data from the Lahman library
+battingData <- Batting
+
+# Create a count of unqiue playerID's for each of the seven leagues
+playersByLeague <- Batting %>%
+  group_by(lgID) %>%
+  summarise(
+    TotalPlayers = n_distinct(playerID)
+  ) 
+
+# Create a bar plot of the counts and color it by league
+# Note that whenever we are referencing a column name we need to use the '~'
+plot_ly(
+  data = playersByLeague,
+  x = ~forcats::fct_reorder(lgID, desc(TotalPlayers)),
+  y = ~TotalPlayers,
+  color = ~lgID,
+  type = 'bar'
+) 
+
+# Lets recreate the previous graph but spruce it up a bit
+plot_ly(
+  data = playersByLeague,
+  x = ~lgID,
+  y = ~TotalPlayers,
+  color = ~lgID,
+  hoverinfo = "x+y",
+  type = 'bar'
+) %>%
+  layout(title = "Total Unique Players by League", showlegend=F,
+         xaxis = list(title = "League ID"), yaxis=list(title = "Total Players"))
+
+# That was cool but what about over time?
+# To do this we will make a line chart to display this information
+# But first we must create our data set
+playersByLeagueByYear <- battingData %>%
+  group_by(lgID, yearID) %>%
+  summarise(
+    TotalPlayers = n_distinct(playerID)
+  ) 
+
+
+# First attempt
+plot_ly(
+  data=playersByLeagueByYear,
+  x=~yearID,
+  y=~TotalPlayers,
+  color=~lgID,
+  type='scatter',
+  mode ='lines+markers'
+)
+
+# Clean it up some
+plot_ly(
+  data=playersByLeagueByYear,
+  x=~yearID,
+  y=~TotalPlayers,
+  color=~lgID,
+  hoverinfo = "text",
+  text = ~paste("Year: ", yearID,
+                "<br> League: ", lgID,
+                "<br> Total Players: ", TotalPlayers),
+  type='scatter',
+  mode ='lines+markers'
+) %>%
+  layout(title = "Total Players by Year and League",
+         xaxis = list(title="Year"),
+         yaxis = list(title="Total Players"))
+
+playersByLeagueByYearByTeam <- battingData %>%
+  group_by(lgID, teamID, yearID) %>%
+  summarise(
+    TotalPlayers = n_distinct(playerID)
+  )
+
+plot_ly(
+  data = playersByLeagueByYearByTeam,
+  x = ~lgID,
+  y = ~TotalPlayers,
+  color = ~teamID,
+  hoverinfo = 'text',
+  text = ~paste("TeamID: ", teamID,
+                "<br> Total Players: ", TotalPlayers,
+                "<br> Year: ", yearID),
+  type = 'scatter'
+)  %>%
+  layout(title = "Total Players by Team, League, and Year", showlegend=F)
+
+sharedData <- SharedData$new(playerMeanAtBatsYearLeague, ~teamID, "Select a Team")
+
+p1 <- plot_ly(data = sharedData) %>%
+            group_by(teamID) %>%
+            add_markers(
+              x = ~TotalPlayers,
+              y = ~teamID)
+
+
+p2 <- plot_ly(data=sharedData) %>%
+            group_by(teamID) %>%
+            add_lines(
+              x = ~yearID,
+              y = ~TotalPlayers,
+              type= 'scatter',
+              mode = 'lines') 
+
+subplot(p1, p2, widths = c(0.3, 0.7)) %>%
+  hide_legend() %>%
+  highlight(dynamic = TRUE, selectize = TRUE)
+
+
